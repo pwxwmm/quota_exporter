@@ -1,0 +1,13 @@
+quota_exporter:
+  # API URL (configurable)
+  api_url: "http://172.20.35.42:9118/v1/pull/storageQuota"
+
+  # Data fetch interval in seconds (default: 10 minutes)
+  scrape_interval: 600
+
+  # Request timeout (default: 3 minutes)
+  request_timeout: "3m"
+
+server:
+  listen_address: "0.0.0.0"
+  listen_port: 9533
