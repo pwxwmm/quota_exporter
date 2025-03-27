@@ -26,7 +26,7 @@ This project supports configurable storage quota retrieval methods and includes 
 Ensure you have **Go 1.24+** installed, then run the following commands:  
 
 ```bash
-git clone https://code.iflytek.com:30004/mmwei3/quota_exporter.git
+git clone https://github.com/pwxwmm/quota_exporter.git
 cd quota_exporter
 go mod tidy
 go build -o quota_exporter ./cmd/main.go
@@ -53,7 +53,7 @@ All storage system configurations are stored in `config.yaml`. Example:
 ```yaml
 quota_exporter:
   # API address (configurable)
-  api_url: "http://172.20.35.42:9118/v1/pull/storageQuota"
+  api_url: "http://127.0.0.1:9118/v1/pull/storageQuota"
 
   # Data pull interval (seconds), default 10 minutes (600 seconds)
   scrape_interval: 600

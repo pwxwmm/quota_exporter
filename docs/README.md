@@ -8,7 +8,7 @@
 ## **Installation**
 ### **1. Clone the repository**
 ```bash
-git clone https://github.com/yourrepo/quota_exporter.git
+git clone https://github.com/pwxwmm/quota_exporter.git
 cd quota_exporter
 ```
 
