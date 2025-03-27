@@ -23,9 +23,10 @@ The response contains metrics in the following Prometheus format:
 ```plaintext
 # HELP quota_size_available Quota size for storage
 # TYPE quota_size_available gauge
-quota_size_available{storage="train28"} 1050000
-quota_size_used{storage="train28"} 500000
-quota_size_free{storage="train28"} 550000
+quota_size_available{storage="train28", group_name: "bitbrain",date: "2025-01-20 17:27"} 1050000
+quota_size_used{storage="train28", group_name: "bitbrain", date: "2025-01-20 17:27"} 500000
+quota_size_free{storage="train28", group_name: "bitbrain", date: "2025-01-20 17:27"} 550000
+cluster_use_rate{storage="train28", date: "2025-01-20 17:27"} 42,
 ```
 
 **Prometheus Scrape Configuration Example**:  

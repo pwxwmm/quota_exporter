@@ -119,9 +119,10 @@ Once running, `quota_exporter` provides an HTTP endpoint at port `9533` under `/
 ```plaintext
 # HELP quota_size_available Quota size for storage
 # TYPE quota_size_available gauge
-quota_size_available{storage="train28", group_name: "bitbrain"} 1050000
-quota_size_used{storage="train28", group_name: "bitbrain", } 500000
-quota_size_free{storage="train28", group_name: "bitbrain"} 550000
+quota_size_available{storage="train28", group_name: "bitbrain",date: "2025-01-20 17:27"} 1050000
+quota_size_used{storage="train28", group_name: "bitbrain", date: "2025-01-20 17:27"} 500000
+quota_size_free{storage="train28", group_name: "bitbrain", date: "2025-01-20 17:27"} 550000
+cluster_use_rate{storage="train28", date: "2025-01-20 17:27"} 42,
 ```
 
 To configure Prometheus to scrape metrics from `quota_exporter`, add the following to your Prometheus config:  
@@ -185,7 +186,6 @@ This project is licensed under the **MIT License**.
 ## **10. Contact Information**  
 - **Author**: mmwei3  
 - **Email**: mmwei3@iflytek.com, 1300042631@qq.com  
-- **Phone**: 17855350258  
 - **Date**: 2025-03-20  
 
 ---
