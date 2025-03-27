@@ -1,6 +1,6 @@
 quota_exporter:
   # API URL (configurable)
-  api_url: "http://127.0.0.1:9118/v1/pull/storageQuota"
+  api_url: "http://172.20.35.42:9118/v1/pull/storageQuota"
 
   # Data fetch interval in seconds (default: 10 minutes)
   scrape_interval: 600
