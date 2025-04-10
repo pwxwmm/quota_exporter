@@ -6,8 +6,6 @@ import (
 	"log"
 	"net/http"
 	"quota_exporter/config"
-	"strconv"
-	"strings"
 	"sync"
 	"time"
 	"math"
@@ -23,7 +21,6 @@ type QuotaAPIResponse struct {
 type QuotaMetrics struct {
 	SizeUsed  int64  `json:"size_used"`
 	CluName   string `json:"clu_name"`
-	UseRate   string `json:"use_rate"`
 	GroupName string `json:"group_name"`
 	Date      string `json:"date"`
 	SizeSum   int64  `json:"size_sum"`
@@ -44,16 +41,9 @@ func InitMetrics() {
 			Name: "quota_group_use_ratio",
 			Help: "Quota group use rate percentage",
 		},
-		[]string{"storage", "group_name"},
+		[]string{"clu_name", "group_name"},
 	)
 
-	quotaMetrics["cluster_use_rate"] = prometheus.NewGaugeVec(
-		prometheus.GaugeOpts{
-			Name: "cluster_use_rate",
-			Help: "Cluster use rate percentage",
-		},
-		[]string{"storage"},
-	)
 
 	lastUpdatedGauge = prometheus.NewGauge(
 		prometheus.GaugeOpts{
@@ -132,35 +122,28 @@ func processQuotaData(quotas []QuotaMetrics) {
 			quota.GroupName = "unknown"
 		}
 
-		useRateValue := parsePercentage(quota.UseRate)
-		labelValues := []string{quota.CluName, quota.GroupName}
-		clusterLabel := []string{quota.CluName}
+		if quota.SizeSum == 0 {
+			continue
+		}
 
 		ratio := float64(quota.SizeUsed) / float64(quota.SizeSum) * 100
 		ratio = math.Round(ratio*100) / 100 // 保留两位小数
 
+		// log.Printf("[INFO] group=%s, storage=%s, size_used=%d, size_sum=%d, ratio=%.2f",
+		// 	quota.GroupName, quota.CluName, quota.SizeUsed, quota.SizeSum, ratio)
+
+		labelValues := []string{quota.CluName, quota.GroupName}
 		quotaMetrics["quota_group_use_ratio"].WithLabelValues(labelValues...).Set(ratio)
-		quotaMetrics["cluster_use_rate"].WithLabelValues(clusterLabel...).Set(useRateValue)
 	}
 }
+
+
 
 func setQuotaToZero() {
 	defaultLabels := []string{"unknown", "unknown"}
-	clusterLabels := []string{"unknown"}
-
+	log.Printf("[WARN] Resetting all metrics to zero due to error")
 	quotaMetrics["quota_group_use_ratio"].WithLabelValues(defaultLabels...).Set(0)
-	quotaMetrics["cluster_use_rate"].WithLabelValues(clusterLabels...).Set(0)
 	updateLastUpdated(time.Unix(0, 0))
-}
-
-func parsePercentage(value string) float64 {
-	cleanValue := strings.TrimSuffix(value, "%")
-	parsedValue, err := strconv.ParseFloat(cleanValue, 64)
-	if err != nil {
-		log.Printf("[ERROR] Failed to parse use_rate '%s': %v", value, err)
-		return 0
-	}
-	return parsedValue
 }
 
 func formatTimestamp(t time.Time) string {
