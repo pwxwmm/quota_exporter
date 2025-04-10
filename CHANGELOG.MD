@@ -2,6 +2,15 @@
 ---
 
 # CHANGELOG
+## [v1.2.2] - 2025-04-10
+
+### Added
+- Support for configurable `log_level` in `config.yaml` (`info` or `debug`).
+- Debug logs for quota details will only be printed when `log_level: debug`.
+
+### Changed
+- Centralized log level control via `config.IsDebugEnabled()` utility function.
+
 
 ## [v1.2.1] - 2025-04-10
 
